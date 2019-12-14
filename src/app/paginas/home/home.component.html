@@ -1,0 +1,149 @@
+<div class="animated fadeIn">
+  <div class="jumbotron jumbotron-fluid banner mb-5">
+    <div class="container">
+      <h3>Teste Inventione</h3>
+      <h1>Jonathan Sebastian da Silva Moraes</h1>
+    </div>
+  </div>
+
+  <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row ml-3">
+      <div class="col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2">
+        <label for="nome" class="mr-1"><b>Nome:</b></label>
+        <input class="form-control" id="nome" type="text" placeholder="digite o nome" formControlName="nome"
+          minLength="1" [mask]="REGEX_VALIDACAO_NOME"
+          [ngClass]="{ 'is-invalid': submitted && f.nome.errors && f.nome.value.length < 1}" autocomplete="off" #nome>
+        <div *ngIf="submitted && f.nome.errors && f.nome.value.length < 1" class="invalid-feedback">
+          <div *ngIf="f.nome.errors.required">Nome obrigatório.</div>
+        </div>
+      </div>
+      <div class="col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3">
+        <label for="data"><b>Data:</b></label>
+        <input class="form-control" formControlName="data" placeholder="dd/mm/yyyy" maxlength="8" mask="[0-9]"
+          [ngClass]="{ 'is-invalid': submitted && f.data.errors}" placement="bottom"
+          [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-dark-blue' }"
+          bsDatepicker #data>
+        <div *ngIf="submitted && f.data.errors" class="invalid-feedback">
+          <div *ngIf="f.data.errors.required">Data obrigatória.</div>
+        </div>
+      </div>
+    </div>
+    <div class="row ml-3">
+      <div class="col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3">
+        <label for="idade"><b>Idade:</b></label>
+        <input class="form-control" id="idade" type="text" placeholder="digite a idade" formControlName="idade"
+          mask="[0-9]" maxlength="3"
+          [ngClass]="{ 'is-invalid': submitted && f.idade.errors && f.idade.value.length < 1 }" autocomplete="off" #idade>
+        <div *ngIf="submitted && f.idade.errors && f.idade.value.length < 1" class="invalid-feedback">
+          <div *ngIf="f.idade.errors.required">Idade obrigatória.</div>
+        </div>
+      </div>
+    </div>
+    <div class="row ml-3">
+      <div class="col-4">
+        <label class="mr-2" for="sexo"><b>Sexo:</b></label>
+      </div>
+    </div>
+    <div class="row ml-5">
+      <div class="col-12 mb-3">
+        <div class="form-check" [ngClass]="{ 'is-invalid': submitted && f.sexo.errors }">
+          <input class="form-check-input" formControlName="sexo" type="radio" value="Masculino" name="sexo"
+            id="masculino">
+          <label class="form-check-label" for="masculino">
+            Masculino
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" formControlName="sexo" type="radio" value="Feminino" name="sexo"
+            id="feminino">
+          <label class="form-check-label" for="feminino">
+            Feminino
+          </label>
+        </div>
+        <div *ngIf="submitted && f.sexo.errors" class="invalid-feedback">
+          <div *ngIf="f.sexo.errors.required">É necessario selecionar um sexo.</div>
+        </div>
+      </div>
+    </div>
+    <div class="row ml-3 mb-3">
+      <div class="col-12">
+        <div class="form-check">
+          <input class="form-check-input" formControlName="status" type="checkbox"> Habilitar Segundo Painel
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="mostrarInputDados()">
+      <div class="animated fadeIn">
+        <div class="row ml-3 mb-3">
+          <div class="col-12 col-md-6 col-lg-4 col-xl-4">
+            <textarea formControlName="areaTexto" class="form-control" id="textArea" maxlength="10000"
+              [ngClass]="{ 'is-invalid': submitted && f.areaTexto.errors && f.areaTexto.value.length < 1}" #box
+              (keyup)="0"></textarea>
+            <small>{{box.value.length}} de 10000</small>
+            <div *ngIf="submitted && f.areaTexto.errors && f.areaTexto.value.length < 1" class="invalid-feedback">
+              <div *ngIf="f.areaTexto.errors.required">Campo obrigatório.</div>
+            </div>
+          </div>
+        </div>
+        <div class="row ml-3">
+          <div class="col-auto">
+            <button class="btn btn-primary btn-sm" type="submit" data-toggle="modal"
+              data-target="#modal">Apresentar</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Dados</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!apresentarDados()">
+          <p>Campo(s) invalido(s) ou vazio(s)</p>
+        </ng-container>
+        <ng-container *ngIf="apresentarDados()">
+          <div class="row">
+            <div class="col-12">
+              <label for="nomeExibido" class="mr-1"><b>Nome:</b></label>
+              <input class="form-control" id="nomeExibido" value="{{nome.value}}" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label for="idadeExibida" class="mr-1"><b>Idade:</b></label>
+              <input class="form-control" id="idadeExibida" value="{{idade.value}}" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label for="dataExibida" class="mr-1"><b>Data:</b></label>
+              <input class="form-control" id="dataExibida" value="{{data.value}}" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label for="sexoExibido" class="mr-1"><b>Sexo:</b></label>
+              <input class="form-control" id="sexoExibido" value="{{form.controls.sexo.value}}" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label for="areaTextoExibido"><b>Texto:</b></label>
+              <textarea class="form-control" id="areaTextoExibido" maxlength="10000" #boxExibido (keyup)="0"
+                formControlName="areaTexto" readonly>{{form.controls.areaTexto.value}}</textarea>
+              <small>{{boxExibido.value.length}} de 10000</small>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

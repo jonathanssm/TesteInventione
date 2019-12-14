@@ -19,6 +19,10 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "ngx-bootstrap": "^5.2.0",
+    "ngx-date-picker": "0.0.24",
+    "ngx-mask": "^8.1.6",
+    "ngx-mask-input": "^0.1.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
